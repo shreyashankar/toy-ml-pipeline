@@ -24,3 +24,5 @@ For the second pass, I will incorporate MLFlow models to do model versioning. I 
 
 Issues correspond to software tickets. Each PR is associated with a ticket.
 
+Currently I have enabled repository interaction limits on anyone who is *not* a collaborator. This will lift in a month.
+
