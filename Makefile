@@ -1,11 +1,16 @@
 .PHONY: help lint etl
+include .env
 
 # Makefile variables
 VENV_NAME:=venv
-PYTHON=${VENV_NAME}/bin/python3
+PYTHON=${VENV_NAME}/bin/python3 
 
 # Include your variables here
 # AIRFLOW_HOME=~/.airflow
+
+# Export environment variables
+VARS:=$(shell sed -ne 's/ *\#.*$$//; /./ s/=.*$$// p' .env )
+$(foreach v,$(VARS),$(eval $(shell echo export $(v)="$($(v))")))
 
 .DEFAULT: help
 help:
