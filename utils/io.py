@@ -8,6 +8,8 @@ import pandas as pd
 import s3fs
 import typing
 
+from .naming import *
+
 BUCKET_NAME = 'toy-applied-ml-pipeline'
 
 
@@ -60,6 +62,41 @@ def write_file(df: pd.DataFrame, suffix: str, scratch: bool = True) -> str:
 
     df.to_parquet(path, index=False)
     return path
+
+
+def save_output(df: pd.DataFrame, component: str, dev: bool = True, overwrite: bool = False, version: str = None) -> str:
+    """
+    This function writes the output of a pipeline component (a dataframe) to a parquet file.
+
+    Args:
+        df (pd.DataFrame): dataframe representing the output
+        component (str): name of the component that produced the output (ex: clean)
+        dev (bool, optional): whether this is run in development or "production" mode
+        overwrite (bool, optional): whether to overwrite a file with the same name
+        version (str, optional): optional version for the output. If not specified, the function will create the version number.
+
+    Returns:
+        path (str): Full path that the file can be accessed at
+    """
+
+    prefix = os.path.join(
+        'dev', component) if dev else os.path.join('prod', component)
+
+    assert list_files(
+        prefix), 'Component does not exist. Specify the correct component or contact an administrator to create it.'
+
+    # Create version if doesn't exist
+    if version == None:
+        version = get_timestamp_as_string()
+
+    filename = os.path.join(prefix, f'{version}.pq')
+
+    # Make sure file doesn't exist if overwrite is False
+    if list_files(filename) and overwrite is False:
+        raise OSError(
+            'Trying to overwrite a with this component name and version. Please try another name / version or set overwrite to True.')
+
+    return write_file(df, filename, scratch=False)
 
 
 def list_files(prefix: str = "") -> typing.List[str]:
