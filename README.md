@@ -26,3 +26,5 @@ Issues correspond to software tickets. Each PR is associated with a ticket.
 
 Currently I have enabled repository interaction limits on anyone who is *not* a collaborator.
 
+This is designed such that you need credentials (which you can store in `.env` file) to write to the data bucket, but you can read any files in the data bucket without credentials.
+
