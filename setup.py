@@ -8,6 +8,7 @@ setup(
         'fsspec',
         'numpy',
         'pandas',
+        'pyarrow',
         's3fs'
     ]
 )

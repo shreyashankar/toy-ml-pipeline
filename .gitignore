@@ -1,1 +1,3 @@
 venv*
+.env
+utils/__pycache__/*
