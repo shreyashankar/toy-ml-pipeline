@@ -9,6 +9,7 @@ setup(
         'numpy',
         'pandas',
         'pyarrow',
+        'pytest',
         's3fs'
     ]
 )

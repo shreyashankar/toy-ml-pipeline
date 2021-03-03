@@ -79,6 +79,8 @@ def save_output(df: pd.DataFrame, component: str, dev: bool = True, overwrite: b
         path (str): Full path that the file can be accessed at
     """
 
+    assert len(component) > 0, 'Component name should not be empty.'
+
     prefix = os.path.join(
         'dev', component) if dev else os.path.join('prod', component)
 
