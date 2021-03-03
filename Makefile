@@ -33,5 +33,8 @@ $(VENV_NAME)/bin/activate: setup.py
 lint: venv
 	${PYTHON} -m pylint main.py
 
+test: venv
+	${PYTHON} -m pytest -s utils/tests.py
+
 etl: venv
 	${PYTHON} etl/main.py
