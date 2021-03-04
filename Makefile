@@ -36,5 +36,8 @@ lint: venv
 test: venv
 	${PYTHON} -m pytest -s utils/tests.py
 
-etl: venv
-	${PYTHON} etl/main.py
+cleaning: venv
+	${PYTHON} etl/cleaning.py
+
+featuregen: venv
+	${PYTHON} etl/featuregen.py

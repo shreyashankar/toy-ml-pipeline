@@ -8,7 +8,7 @@ import pandas as pd
 import s3fs
 import typing
 
-from .naming import *
+from .helpers import *
 
 BUCKET_NAME = 'toy-applied-ml-pipeline'
 
@@ -114,3 +114,31 @@ def list_files(prefix: str = "") -> typing.List[str]:
     fs = s3fs.S3FileSystem(anon=True)
     path = os.path.join(BUCKET_NAME, prefix)
     return fs.ls(path)
+
+
+def load_output(component: str, dev: bool = True, version: str = None) -> pd.DataFrame:
+    """
+    This function loads the latest version of data that was produced by a component.
+
+    Args:
+        component (str): component name that we want to get the output from
+        dev (bool): whether this is run in development or "production" mode
+        version (str, optional): specified version of the data
+
+    Returns:
+        df (pd.DataFrame): dataframe corresponding to the data in the latest version of the output for the specified component
+    """
+    assert len(component) > 0, 'Component name should not be empty.'
+
+    prefix = os.path.join(
+        'dev', component) if dev else os.path.join('prod', component)
+
+    latest_filename = os.path.join(
+        prefix, f'{version}.pq') if version else None
+    if latest_filename == None:
+        filenames = list_files(prefix)
+        latest_filename = get_file_at_latest_timestamp(filenames)
+
+    # Load data
+    df = pd.read_parquet(f's3://{latest_filename}')
+    return df
