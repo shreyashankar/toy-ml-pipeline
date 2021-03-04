@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     # Concatenate features
     features_df = pd.concat(
-        [pickup_features, trip_features, categorical_features, label], axis=1)
+        [pickup_features, trip_features, categorical_features, label, df['tpep_pickup_datetime'].to_frame()], axis=1)
 
     # Write features to s3
     print(io.save_output(features_df, 'features'))

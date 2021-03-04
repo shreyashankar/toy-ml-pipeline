@@ -41,3 +41,6 @@ cleaning: venv
 
 featuregen: venv
 	${PYTHON} etl/featuregen.py
+
+split: venv
+	${PYTHON} training/split.py
