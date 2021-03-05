@@ -4,7 +4,7 @@ from utils import io
 
 if __name__ == '__main__':
     # Load latest features
-    df = io.load_output('features')
+    df = io.load_output_df('features')
 
     # Parameters
     num_rows = len(df.index)
@@ -17,5 +17,5 @@ if __name__ == '__main__':
     test_df = df.tail(int((1 - train_frac) * num_rows))
 
     # Save train and test sets
-    print(io.save_output(train_df, f'{component_prefix}/train'))
-    print(io.save_output(test_df, f'{component_prefix}/test'))
+    print(io.save_output_df(train_df, f'{component_prefix}/train'))
+    print(io.save_output_df(test_df, f'{component_prefix}/test'))

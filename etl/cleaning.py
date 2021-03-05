@@ -9,4 +9,4 @@ if __name__ == '__main__':
         raw_df, '2020-01-01', '2020-01-31')
 
     # Write "clean" df to s3
-    print(io.save_output(clean_df, 'clean'))
+    print(io.save_output_df(clean_df, 'clean'))

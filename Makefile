@@ -44,3 +44,6 @@ featuregen: venv
 
 split: venv
 	${PYTHON} training/split.py
+
+train: venv
+	${PYTHON} training/train.py

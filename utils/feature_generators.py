@@ -1,19 +1,8 @@
 from abc import ABC, abstractmethod
+from .helpers import assert_subset
 
 import pandas as pd
 import typing
-
-
-def assert_subset(required_columns: typing.List[str], all_columns: typing.List[str]):
-    """
-    Asserts that one list of strings is a subset of the other list.
-
-    Args:
-        required_columns (List[str]): subset
-        all_columns (List[str]): full set
-    """
-    assert set(required_columns).issubset(set(all_columns)
-                                          ), 'Required columns are not in the dataframe.'
 
 
 class FeatureGenerator(ABC):
@@ -39,11 +28,11 @@ class HighTip(FeatureGenerator):
         assert_subset(self.required_columns, df.columns)
         tip_fraction_col = df.tip_amount / df.fare_amount
         feature_df = pd.DataFrame(
-            {'tip_fraction': tip_fraction_col > tip_fraction})
+            {'high_tip_indicator': tip_fraction_col > tip_fraction})
         return feature_df[self.schema().keys()]
 
     def schema(self) -> dict:
-        return {'tip_fraction': bool}
+        return {'high_tip_indicator': bool}
 
 
 class Pickup(FeatureGenerator):

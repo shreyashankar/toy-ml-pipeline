@@ -70,10 +70,23 @@ def get_file_at_latest_timestamp(filenames: typing.List[str]) -> str:
     format = '%Y%m%d-%H%M%S'
     for filename in filenames:
         try:
-            # Strip down to the suffix without the .pq extension
-            datetime.datetime.strptime(filename.split('/')[-1][:-3], format)
+            # Strip down to the suffix without the extension
+            suffix = filename.split('/')[-1].split('.')[0]
+            datetime.datetime.strptime(suffix, format)
             valid_filenames.append(filename)
         except ValueError:
             pass
 
     return max(valid_filenames)
+
+
+def assert_subset(required_columns: typing.List[str], all_columns: typing.List[str]):
+    """
+    Asserts that one list of strings is a subset of the other list.
+
+    Args:
+        required_columns (List[str]): subset
+        all_columns (List[str]): full set
+    """
+    assert set(required_columns).issubset(set(all_columns)
+                                          ), 'Required columns are not in the dataframe.'
