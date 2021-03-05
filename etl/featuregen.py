@@ -4,7 +4,7 @@ from utils import io, feature_generators
 
 if __name__ == '__main__':
     # Load latest clean data
-    df = io.load_output('clean')
+    df = io.load_output_df('clean')
 
     # Create features and label
     pickup_features = feature_generators.Pickup().compute(df)
@@ -17,4 +17,4 @@ if __name__ == '__main__':
         [pickup_features, trip_features, categorical_features, label, df['tpep_pickup_datetime'].to_frame()], axis=1)
 
     # Write features to s3
-    print(io.save_output(features_df, 'features'))
+    print(io.save_output_df(features_df, 'features'))
