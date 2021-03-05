@@ -14,7 +14,12 @@ if __name__ == '__main__':
     ]
     label_column = 'high_tip_indicator'
 
-    mw = models.RandomForestModelWrapper(feature_columns=feature_columns)
+    model_params = {
+        'max_depth': 10
+    }
+
+    mw = models.RandomForestModelWrapper(
+        feature_columns=feature_columns, model_params=model_params)
     mw.train(df, label_column)
     score = mw.score(df, label_column)
     mw.add_data_path('train_df', train_file_path)
