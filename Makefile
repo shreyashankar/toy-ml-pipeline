@@ -1,4 +1,4 @@
-.PHONY: help lint etl
+.PHONY: help lint etl training inference
 include .env
 
 # Makefile variables
@@ -30,8 +30,8 @@ $(VENV_NAME)/bin/activate: setup.py
 	rm -rf ./*.egg-info
 	touch $(VENV_NAME)/bin/activate
 
-lint: venv
-	${PYTHON} -m pylint main.py
+# lint: venv
+# 	${PYTHON} -m pylint main.py
 
 test: venv
 	${PYTHON} -m pytest -s utils/tests.py
@@ -47,3 +47,6 @@ split: venv
 
 train: venv
 	${PYTHON} training/train.py
+
+inference: venv
+	${PYTHON} inference/inference.py
