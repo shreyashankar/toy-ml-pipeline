@@ -65,30 +65,30 @@ class IOTests(unittest.TestCase):
         pass
 
     def test_save_output_no_version(self):
-        filename = save_output(self.toy_df, 'test')
+        filename = save_output_df(self.toy_df, 'test')
         self.assertIn('s3://toy-applied-ml-pipeline/dev/test/', filename)
 
     def test_save_output_no_component(self):
         with self.assertRaises(AssertionError):
-            save_output(self.toy_df, '')
+            save_output_df(self.toy_df, '')
 
     def test_save_output_with_version(self):
-        filename = save_output(self.toy_df, 'test',
-                               version='test', overwrite=True)
+        filename = save_output_df(self.toy_df, 'test',
+                                  version='test', overwrite=True)
         self.assertEqual(
             filename, 's3://toy-applied-ml-pipeline/dev/test/test.pq')
 
     def test_save_output_no_overwrite(self):
-        save_output(self.toy_df, 'test',
-                    version='test_no_overwrite', overwrite=True)
+        save_output_df(self.toy_df, 'test',
+                       version='test_no_overwrite', overwrite=True)
         with self.assertRaises(OSError):
-            save_output(self.toy_df, 'test', version='test_no_overwrite')
+            save_output_df(self.toy_df, 'test', version='test_no_overwrite')
 
     def test_save_output_overwrite(self):
-        filename_1 = save_output(self.toy_df, 'test',
-                                 version='test_overwrite', overwrite=True)
-        filename_2 = save_output(self.toy_df, 'test',
-                                 version='test_overwrite', overwrite=True)
+        filename_1 = save_output_df(self.toy_df, 'test',
+                                    version='test_overwrite', overwrite=True)
+        filename_2 = save_output_df(self.toy_df, 'test',
+                                    version='test_overwrite', overwrite=True)
         self.assertEqual(filename_1, filename_2)
 
 
