@@ -1,3 +1,12 @@
+"""
+feature_generators.py
+
+This file contains the abstraction for a FeatureGenerator, which should include:
+- name, required columns
+- compute method that returns the computed feature
+- schema method that returns schema for the feature returned
+"""
+
 from abc import ABC, abstractmethod
 from .helpers import assert_subset
 
@@ -6,7 +15,10 @@ import typing
 
 
 class FeatureGenerator(ABC):
+    """Abstract class for a feature generator."""
+
     def __init__(self, name: str, required_columns: typing.List[str]):
+        """Constructor stores the name of the feature and columns required in a df to construct that feature."""
         self.name = name
         self.required_columns = required_columns
 
@@ -25,6 +37,7 @@ class HighTip(FeatureGenerator):
             'high_tip', ['tip_amount', 'fare_amount'])
 
     def compute(self, df: pd.DataFrame, tip_fraction: float = 0.2) -> pd.DataFrame:
+        """Computes whether the tip was at least tip_fraction of the fare."""
         assert_subset(self.required_columns, df.columns)
         tip_fraction_col = df.tip_amount / df.fare_amount
         feature_df = pd.DataFrame(
@@ -40,6 +53,7 @@ class Pickup(FeatureGenerator):
         super(Pickup, self).__init__('pickup', ['tpep_pickup_datetime'])
 
     def compute(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Computes features related to the pickup time, such as weekday, hour, minute, and whether the pickup was during working hours."""
         assert_subset(self.required_columns, df.columns)
         pickup_weekday = df.tpep_pickup_datetime.dt.weekday
         pickup_hour = df.tpep_pickup_datetime.dt.hour
@@ -60,6 +74,7 @@ class Trip(FeatureGenerator):
                                             'tpep_pickup_datetime', 'trip_distance', 'passenger_count'])
 
     def compute(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Computes trip-related features, such as passenger count, trip distance, time taken for the trip, and average speed."""
         assert_subset(self.required_columns, df.columns)
         trip_time = (df.tpep_dropoff_datetime -
                      df.tpep_pickup_datetime).dt.seconds
@@ -78,6 +93,7 @@ class Categorical(FeatureGenerator):
                                                           'DOLocationID', 'RatecodeID'])
 
     def compute(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Identity function for categorical features."""
         assert_subset(self.required_columns, df.columns)
         return df[self.schema().keys()]
 
