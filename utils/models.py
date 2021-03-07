@@ -14,6 +14,7 @@ from sklearn.metrics import f1_score
 
 import numpy as np
 import pandas as pd
+import typing
 
 RANDOM_STATE = 42
 ALL_PROCESSORS = -1
@@ -23,7 +24,7 @@ IMPUTATION_VALUE = -1.0
 class ModelWrapper(ABC):
     """Abstract wrapper class for a machine learning model."""
 
-    def __init__(self, name, feature_columns=[], model_params={}, data_dict={}, metric_dict={}):
+    def __init__(self, name: str, feature_columns: typing.List[str] = [], model_params: dict = {}, data_dict: dict = {}, metric_dict: dict = {}):
         """Constructor. data_dict and metric_dict store dictionaries of data paths and metric values respectively."""
         self.name = name
         self.feature_columns = feature_columns
@@ -32,31 +33,31 @@ class ModelWrapper(ABC):
         self.metric_dict = metric_dict
         self.model = None
 
-    def add_feature_columns(self, feature_columns):
+    def add_feature_columns(self, feature_columns: typing.List[str]):
         """Adds a list of feature columns to the current list. No deduping."""
         self.feature_columns += feature_columns
 
-    def add_data_paths(self, path_dict):
+    def add_data_paths(self, path_dict: dict):
         """Adds a dictionary of data paths."""
         self.data_dict.update(path_dict)
 
-    def add_metrics(self, metric_dict):
+    def add_metrics(self, metric_dict: dict):
         """Adds a metric dictionary."""
         self.metric_dict.update(metric_dict)
 
-    def add_data_path(self, path_key, path_name):
+    def add_data_path(self, path_key: str, path_name: str):
         """Adds a data path. Must specify key and name, i.e. key='train_df' and name='path/to/trainset.pq'"""
         self.add_data_paths({path_key: path_name})
 
-    def add_metric(self, metric_name, metric_val):
+    def add_metric(self, metric_name: str, metric_val: typing.Any):
         """Adds a metric value. Must specify name and value of the metric."""
         self.add_metrics({metric_name: metric_val})
 
-    def get_data_paths(self):
+    def get_data_paths(self) -> dict:
         """Returns the data path dictionary."""
         return self.data_dict
 
-    def get_metrics(self):
+    def get_metrics(self) -> dict:
         """Returns the metric dictionary."""
         return self.metric_dict
 
@@ -92,7 +93,7 @@ class ModelWrapper(ABC):
 
 
 class RandomForestModelWrapper(ModelWrapper):
-    def __init__(self, feature_columns=[], model_params={}):
+    def __init__(self, feature_columns: typing.List[str] = [], model_params: dict = {}):
         """Defaults to full parallelism and random state = 42."""
         base_params = {'n_jobs': ALL_PROCESSORS, 'random_state': RANDOM_STATE}
         base_params.update(model_params)
