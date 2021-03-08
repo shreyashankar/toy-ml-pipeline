@@ -6,11 +6,13 @@ setup(
     packages=find_packages(exclude=['tests']),
     install_requires=[
         'boto3',
+        'flask',
         'fsspec',
         'numpy',
         'pandas',
         'pyarrow',
         'pytest',
+        'requests',
         's3fs',
         'sklearn'
     ]

@@ -1,4 +1,4 @@
-.PHONY: help lint etl training inference
+.PHONY: help lint etl training serve inference
 include .env
 
 # Makefile variables
@@ -47,6 +47,9 @@ split: venv
 
 train: venv
 	${PYTHON} training/train.py
+
+serve: venv
+	${PYTHON} inference/app.py
 
 inference: venv
 	${PYTHON} inference/inference.py
