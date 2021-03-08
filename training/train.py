@@ -1,6 +1,6 @@
-import pandas as pd
-
 from utils import io, models
+
+import pandas as pd
 
 if __name__ == '__main__':
     # Load train set
@@ -40,6 +40,9 @@ if __name__ == '__main__':
     print(mw.get_data_paths())
     print('Metrics:')
     print(mw.get_metrics())
+
+    # Print feature importances
+    print(mw.get_feature_importances())
 
     # Save model
     print(mw.save('training/models'))

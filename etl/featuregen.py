@@ -1,8 +1,8 @@
+from utils import io, feature_generators
+
 import itertools
 import os
 import pandas as pd
-
-from utils import io, feature_generators
 
 if __name__ == '__main__':
     months = [f'{month:02d}' for month in range(1, 13)]
