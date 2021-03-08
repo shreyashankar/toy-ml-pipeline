@@ -130,3 +130,10 @@ class RandomForestModelWrapper(ModelWrapper):
 
         rounded_preds = self.predict(df).round()
         return f1_score(df[label_column].values, rounded_preds)
+
+    def get_feature_importances(self) -> pd.DataFrame:
+        """Returns a dataframe corresponding to the importance for each feature."""
+        assert self.model is not None, 'Model is not trained. Please call .train(...).'
+        feature_importance_df = pd.DataFrame({'feature': self.feature_columns,
+                                              'importance': self.model.feature_importances_})
+        return feature_importance_df.sort_values(by='importance', ascending=False).reset_index(drop=True)
