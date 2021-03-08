@@ -1,12 +1,24 @@
+import calendar
+import itertools
+import os
 import pandas as pd
 
 from utils import io, helpers
 
 if __name__ == '__main__':
-    # Load January 2020
-    raw_df = io.read_file('01', '2020')
-    clean_df = helpers.remove_zero_fare_and_oob_rows(
-        raw_df, '2020-01-01', '2020-01-31')
+    months = [f'{month:02d}' for month in range(1, 13)]
+    years = ['2020']
+    product = itertools.product(months, years)
 
-    # Write "clean" df to s3
-    print(io.save_output_df(clean_df, 'clean'))
+    for month, year in product:
+        raw_df = io.read_file(month, year)
+
+        first, last = calendar.monthrange(int(year), int(month))
+        first_day = f'{year}-{month}-{first:02d}'
+        last_day = f'{year}-{month}-{last:02d}'
+        clean_df = helpers.remove_zero_fare_and_oob_rows(
+            raw_df, first_day, last_day)
+
+        # Write "clean" df to s3
+        component = os.path.join('clean', f'{year}_{month}')
+        print(io.save_output_df(clean_df, component))
