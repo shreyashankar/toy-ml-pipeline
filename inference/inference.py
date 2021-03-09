@@ -1,3 +1,9 @@
+"""
+inference.py
+
+Sample script that runs inference on random examples in December 2020. It pings the "api" (served locally in inference/app.py) and gets a response.
+"""
+
 from utils import io
 
 import pandas as pd
@@ -13,7 +19,7 @@ if __name__ == '__main__':
 
     while(True):
         inp = input('Press enter to make a prediction and q to quit.\n')
-        if (inp.strip() == 'q'):
+        if (inp.strip().lower() == 'q'):
             break
         example = df.sample(1).to_dict('r')[0]
         print(f'Request: {example}')
