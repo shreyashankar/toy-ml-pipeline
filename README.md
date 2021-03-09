@@ -1,6 +1,11 @@
 # toy-applied-ml-pipeline
 
-This is a toy example of an applied ML pipeline for me to experiment with MLOps tools. I am making this public in case other people are interested, but I am not fully committed to perfect documentation right now. The purpose of this pipeline is to make it easier to develop "MLOps" tools, as it is hard to develop devtols in a vacuum :)
+This is a toy example of a standalone ML pipeline written **entirely** in Python. No external tools are incorporated into the master branch to keep it as lightweight as possible. 
+
+I am making this public in case other people are interested, but I am not fully committed to perfect documentation right now. I built this for two reasons:
+
+1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtols in a vacuum :) 
+2. To have something to integrate existing MLOps tools with so I can have real opinions
 
 ## Prediction task
 
