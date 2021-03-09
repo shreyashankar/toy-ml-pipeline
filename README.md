@@ -7,6 +7,15 @@ I am making this public in case other people are interested, but I am not fully 
 1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtols in a vacuum :) 
 2. To have something to integrate existing MLOps tools with so I can have real opinions
 
+## Outline
+
+- [ ] Description of ML task
+- [ ] Dataset description 
+- [ ] Description of repository organization / structure
+- [ ] Diagram
+- [ ] Description of data storage and filesystem organization
+- [ ] "Future work"
+
 ## Prediction task
 
 I will leverage the toy task I have trained models for before in [this notebook](https://github.com/shreyashankar/debugging-ml-talk/blob/main/nyc_taxi_2020.ipynb). For any record coming in, we want to predict whether the passenger will give a high tip or not. 
