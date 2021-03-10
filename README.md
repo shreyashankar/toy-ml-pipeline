@@ -14,7 +14,8 @@ I am making this public in case other people are interested, but I am not fully 
 - [ ] Description of repository organization / structure
 - [ ] Diagram
 - [ ] Description of data storage and filesystem organization
-- [ ] "Future work"
+- [ ] How to run
+- [ ] "Future work" / how to contribute
 
 ## Prediction task
 
