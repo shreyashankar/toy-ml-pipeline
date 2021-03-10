@@ -18,7 +18,7 @@
         <li><a href="#data-storage">Data storage</a></li>
       </ul>
     </li>
-    <li><a href="#utils">Utils</a>
+    <li><a href="#utils">Utils documentation</a>
     <ul>
         <li><a href="#io">io</a></li>
         <li><a href="feature-generators">Feature generators</a></li>
@@ -45,7 +45,7 @@ This is a toy example of a standalone ML pipeline written **entirely** in Python
 - [x] Description of repository organization / structure
 - [x] Description of data storage and filesystem organization
 - [x] How to run
-- [ ] `io`, `feature_generators`, and `models` documentation
+- [x] `io`, `feature_generators`, and `models` documentation
 - [ ] "Future work" / how to contribute
 
 ## Getting started
@@ -119,6 +119,112 @@ The bucket has a `scratch` folder, where random scratch files live. These random
 The dev directory's subdirectories represent the components in the pipeline. These subdirectories contain the outputs of each component respectively, where the outputs are versioned with the timestamp the component was run. The `utils.io` library contains helper functions to write outputs and load the latest component output as input to another component. To inspect the filesystem structure further, you can call `io.list_files(dirname)`, which returns the immediate files in `dirname`.
 
 If you have write permissions, store your keys/ids in an `.env` file, and the `Makefile` will automatically pick it up. If you do not have write permissions, you will run into an error if you try to write to the S3 bucket.
+
+## Utils documentation
+
+The `utils` directory contains helper functions and abstractions for expanding upon the current pipeline. Tests are in `utils/tests.py`. Note that only the `io` functions are tested as of now.
+
+### io
+
+`utils/io.py` contains various helper functions to interface with S3. The two most useful functions are:
+
+```python
+def load_output_df(component: str, dev: bool = True, version: str = None) -> pd.DataFrame:
+  """
+    This function loads the latest version of data that was produced by a component.
+    Args:
+        component (str): component name that we want to get the output from
+        dev (bool): whether this is run in development or "production" mode
+        version (str, optional): specified version of the data
+    Returns:
+        df (pd.DataFrame): dataframe corresponding to the data in the latest version of the output for the specified component
+    """
+    ...
+
+def save_output_df(df: pd.DataFrame, component: str, dev: bool = True, overwrite: bool = False, version: str = None) -> str:
+    """
+    This function writes the output of a pipeline component (a dataframe) to a parquet file.
+    Args:
+        df (pd.DataFrame): dataframe representing the output
+        component (str): name of the component that produced the output (ex: clean)
+        dev (bool, optional): whether this is run in development or "production" mode
+        overwrite (bool, optional): whether to overwrite a file with the same name
+        version (str, optional): optional version for the output. If not specified, the function will create the version number.
+    Returns:
+        path (str): Full path that the file can be accessed at
+    """
+    ...
+```
+
+Note that `save_output_df`'s default parameters are set such that you cannot overwrite an existing file. You can change this by setting `overwrite = True`.
+
+### Feature generators
+
+`utils.feature_generators.py` contains the lightweight abstraction for a feature generator to make it easy for someone to create a new feature. The abstraction is as follows:
+
+```python
+class FeatureGenerator(ABC):
+    """Abstract class for a feature generator."""
+
+    def __init__(self, name: str, required_columns: typing.List[str]):
+        """Constructor stores the name of the feature and columns required in a df to construct that feature."""
+        self.name = name
+        self.required_columns = required_columns
+
+    @abstractmethod
+    def compute(self):
+        pass
+
+    @abstractmethod
+    def schema(self):
+        pass
+```
+
+See `utils.feature_generators.py` for examples on how to create specific feature types and `etl/featuregen.py` for an example on how to create the actual instances of the features themselves.
+
+### Models
+
+`utils/models.py` contains the `ModelWrapper` abstraction. This abstraction is essentially a wrapper around a model and consists of:
+
+- the model binary
+- pointer to dataset(s)
+- metric values
+
+To use this abstraction, you must create a subclass of `ModelWrapper` and implement the `preprocess`, `train`, `predict`, and `score` methods. The base class also provides methods to save and load the `ModelWrapper` object. It will fail to save if the client has not added data paths and metrics to the object.
+
+An example of a subclass of `ModelWrapper` is the `RandomForestModelWrapper`, which is also found in `utils/models.py`. The `RandomForestModelWrapper` client usage example is in `training/train.py` and is partially shown below:
+
+```python
+from utils import models
+
+# Create and train model
+mw = models.RandomForestModelWrapper(
+    feature_columns=feature_columns, model_params=model_params)
+mw.train(train_df, label_column)
+
+# Score model
+train_score = mw.score(train_df, label_column)
+test_score = mw.score(test_df, label_column)
+
+mw.add_data_path('train_df', train_file_path)
+mw.add_data_path('test_df', test_file_path)
+mw.add_metric('train_f1', train_score)
+mw.add_metric('test_f1', test_score)
+
+# Save model
+print(mw.save('training/models'))
+
+# Load latest model version
+reloaded_mw = models.RandomForestModelWrapper.load('training/models')
+test_preds = reloaded_mw.predict(test_df)
+```
+
+## Roadmap
+
+## Contributing
+
+## Contact
+
 
 <!-- ## Repository structure
 
