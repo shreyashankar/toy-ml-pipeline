@@ -1,5 +1,38 @@
 # toy-applied-ml-pipeline
 
+<!-- TABLE OF CONTENTS -->
+<details open="open">
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about">About</a>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+    </li>
+    <li><a href="#ml-task-description-and-evaluation-procedure">ML task description and evaluation procedure</a></li>
+    <li><a href="#dataset-description">Dataset description</a></li>
+    <li><a href="#repository-structure">Repository structure</a>
+    <ul>
+        <li><a href="#pipeline-components">Pipeline components</a></li>
+        <li><a href="#data-storage">Data storage</a></li>
+      </ul>
+    </li>
+    <li><a href="#utils">Utils</a>
+    <ul>
+        <li><a href="#io">io</a></li>
+        <li><a href="feature-generators">Feature generators</a></li>
+        <li><a href="models">Models</a></li>
+      </ul>
+    </li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
+
+## About
+
 This is a toy example of a standalone ML pipeline written **entirely** in Python. No external tools are incorporated into the master branch. I built this for two reasons:
 
 1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtols in a vacuum :) 
@@ -23,7 +56,7 @@ This pipeline is broken down into several components, described in a high level 
 2. In the root directory of the repo, run `make serve`
 3. [OPTIONAL] In a new tab, run `make inference` to ping the API with some sample records
 
-All Python dependencies and virtual environment creation is handled by the Makefile.
+All Python dependencies and virtual environment creation is handled by the Makefile. See `setup.py` to see the packages installed into the virtual environment, which mainly consist of basic Python packages such as `pandas` or `sklearn`.
 
 ## ML task description and evaluation procedure
 
@@ -77,7 +110,7 @@ The following table describes the components of this pipeline, in order:
 | Training | Trains a random forest classifier on the train set and evaluates it on the test set | `make training` | `training/train.py` |
 | Inference | Locally serves an API that is essentially a wrapper around the `predict` function | `make serve, make inference` | `[inference/app.py, inference/inference.py]` |
 
-## Data storage
+### Data storage
 
 The inputs and outputs for the pipeline components, as well as other artifacts, are stored in a public S3 bucket named `toy-applied-ml-pipeline` located in `us-west-1`. Read access is universal and doesn't require special permissions. Write access is limited to those with credentials. If you are interested in contributing and want write access, please contact me directly describing how you would like to be involved, and I can send you keys. 
 
