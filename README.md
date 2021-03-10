@@ -1,4 +1,4 @@
-# toy-applied-ml-pipeline
+<h1 align="center">Toy Machine Learning Pipeline</h3>
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
