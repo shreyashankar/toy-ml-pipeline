@@ -9,23 +9,23 @@ I am making this public in case other people are interested, but I am not fully 
 
 ## Outline
 
-- [x] Description of ML task
+- [x] Description of ML task and evaluation procedure
 - [x] Dataset description 
-- [ ] Description of repository organization / structure
+- [x] Description of repository organization / structure
 - [ ] Diagram
 - [ ] Description of data storage and filesystem organization
 - [ ] How to run
 - [ ] "Future work" / how to contribute
 
-## ML task description
+## ML task description and evaluation procedure
 
-We train a model to predict whether a passenger in a NYC taxicab ride will give the driver a large tip. This is a **binary classification task.** A large tip is arbitrarily defined as greater than 20% of the total fare (before tip). The current best model is an instance of `sklearn.ensemble.RandomForestClassifier` with `max_depth` of 10 and other default parameters.
+We train a model to predict whether a passenger in a NYC taxicab ride will give the driver a large tip. This is a **binary classification task.** A large tip is arbitrarily defined as greater than 20% of the total fare (before tip). To evaluate the model or measure the efficacy of the model, we measure the [**F1 score**](https://en.wikipedia.org/wiki/F-score).
 
-I explored this toy task earlier in my [debugging ML talk](https://github.com/shreyashankar/debugging-ml-talk).
+The current best model is an instance of `sklearn.ensemble.RandomForestClassifier` with `max_depth` of 10 and other default parameters. I explored this toy task earlier in my [debugging ML talk](https://github.com/shreyashankar/debugging-ml-talk).
 
 ## Dataset description
 
-We use the yellow taxicab trip records from the NYC Taxi & Limousine Comission [public dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page). The data dictionary can be found [here](https://www1.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf) and is also shown below:
+We use the yellow taxicab trip records from the NYC Taxi & Limousine Comission [public dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page), which is stored in a public aws S3 bucket. The data dictionary can be found [here](https://www1.nyc.gov/assets/tlc/downloads/pdf/data_dictionary_trip_records_yellow.pdf) and is also shown below:
 
 | Field Name      | Description |
 | ----------- | ----------- |
@@ -47,25 +47,33 @@ We use the yellow taxicab trip records from the NYC Taxi & Limousine Comission [
 | Tolls_amount | Total amount of all tolls paid in trip. | 
 | Total_amount | The total amount charged to passengers. Does not include cash tips. |
 
-## Pipeline components
-
-At a basic high leve, this pipeline will consist of data transformations, models, and output transformations. **For a first pass, I will build this system in a lightweight fashion to run on my machine.** The raw data is stored in a public `s3` bucket. I will write the following components:
-
-* data cleaning
-* featurization
-* preprocessing
-* model inference
-* [OPTIONAL] output postprocessing
-
-I will train a model in an offline setting and use that for the model inference setting. For the first pass, I won't be dealing with versioning on the *model* -- just the data, if any. 
-
-For the second pass, I will incorporate MLFlow models to do model versioning. I will think of some clever way to do data versioning (without using extra tools) -- if anything, it wil be another partition in a table.
-
 ## Repository structure
+
+The pipeline contains multiple components, each organized into the following high-level subdirectories:
+
+* `etl`
+* `training`
+* `inference`
+
+### Pipeline components
+
+Any applied ML pipeline is essentially a series of functions applied one after the other, such as data transformations, models, and output transformations. This pipeline was initially built in a lightweight fashion to run on a regular laptop with around 8 GB of RAM. *The logic in these components is a first pass; there is a lot of room to improve.*
+
+The following table describes the components of this pipeline:
+
+| Name      | Description | File(s) |
+| ----------- | ----------- | --- |
+| Cleaning | Reads the dataset (stored in a public S3 bucket) and performs very basic cleaning (drops rows outside the time range or with $0-valued fares) | `etl/cleaning.py` |
+| Featuregen | Generates basic features for the ML model | `etl/featuregen.py` | 
+| Split | Splits the features into train and test sets | `training/split.py` |
+| Training | Trains a random forest classifier on the train set and evaluates it on the test set | `training/train.py` |
+| Inference | Locally serves an API that is essentially a wrapper around the `predict` function | `[inference/app.py, inference/inference.py]` |
+
+<!-- ## Repository structure
 
 Issues correspond to software tickets. Each PR is associated with a ticket.
 
-Currently I have enabled repository interaction limits on anyone who is *not* a collaborator.
+Currently I have enabled repository interaction limits on anyone who is *not* a collaborator. -->
 
-This is designed such that you need credentials (which you can store in `.env` file) to write to the data bucket, but you can read any files in the data bucket without credentials.
+<!-- This is designed such that you need credentials (which you can store in `.env` file) to write to the data bucket, but you can read any files in the data bucket without credentials. -->
 

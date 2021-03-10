@@ -1,7 +1,7 @@
 """
 inference.py
 
-Sample script that runs inference on random examples in December 2020. It pings the "api" (served locally in inference/app.py) and gets a response.
+Sample script that runs inference on random examples in December 2020. It pings the "api" (served locally in inference/app.py) and gets a response. To use, make sure you are also running inference/app.py.
 """
 
 from utils import io
