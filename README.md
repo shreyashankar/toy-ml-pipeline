@@ -35,7 +35,7 @@
 
 This is a toy example of a standalone ML pipeline written **entirely** in Python. No external tools are incorporated into the master branch. I built this for two reasons:
 
-1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtols in a vacuum :) 
+1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtools in a vacuum :) 
 2. To have something to integrate existing MLOps tools with so I can have real opinions
 
 ## Outline
