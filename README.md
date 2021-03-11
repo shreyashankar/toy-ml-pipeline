@@ -40,8 +40,7 @@ This is a toy example of a standalone ML pipeline written **entirely** in Python
 
 The following diagram describes the pipeline at a high level. The README describes it in more detail.
 
-![Diagram](./toy-ml-pipeline.svg)
-<img src="./toy-ml-pipeline.svg">
+![Diagram](./toy-ml-pipeline-diagram.svg)
 
 ## Getting started
 
