@@ -38,16 +38,6 @@ This is a toy example of a standalone ML pipeline written **entirely** in Python
 1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtools in a vacuum :) 
 2. To have something to integrate existing MLOps tools with so I can have real opinions
 
-## Outline
-
-- [x] Description of ML task and evaluation procedure
-- [x] Dataset description 
-- [x] Description of repository organization / structure
-- [x] Description of data storage and filesystem organization
-- [x] How to run
-- [x] `io`, `feature_generators`, and `models` documentation
-- [ ] "Future work" / how to contribute
-
 ## Getting started
 
 This pipeline is broken down into several components, described in a high level by the directories in this repository. See the Makefile for various commands you can run, but to serve the inference API locally, you can do the following:
@@ -221,16 +211,24 @@ test_preds = reloaded_mw.predict(test_df)
 
 ## Roadmap
 
+See the [open issues](https://github.com/shreyashankar/toy-ml-pipeline/issues) for tickets corresponding to feature ideas. The issues in this repo are mainly tagged either `data science` or `engineering`.
+
 ## Contributing
+
+Having a toy example of an ML pipeline isn't just nice to have for people experimenting with MLOps tools. ML beginners or data science enthusiasts looking to understand how to build pipelines around ML models can also benefit from this repository.
+
+Anyone is welcome to contribute, and your contribution is greatly appreciated! Feel free to either create issues or pull requests to address issues.
+
+1. Fork the repo
+2. Create your branch (`git checkout -b YOUR_GITHUB_USERNAME/somefeature`)
+3. Make changes and add files to the commit (`git add .`)
+3. Commit your changes (`git commit -m 'Add something'`)
+4. Push to your branch (`git push origin YOUR_GITHUB_USERNAME/somefeature`)
+5. Make a pull request
 
 ## Contact
 
+Original author: [Shreya Shankar](https://www.twitter.com/sh_reya)
 
-<!-- ## Repository structure
-
-Issues correspond to software tickets. Each PR is associated with a ticket.
-
-Currently I have enabled repository interaction limits on anyone who is *not* a collaborator. -->
-
-<!-- This is designed such that you need credentials (which you can store in `.env` file) to write to the data bucket, but you can read any files in the data bucket without credentials. -->
+Email: shreya@cs.stanford.edu
 
