@@ -38,6 +38,11 @@ This is a toy example of a standalone ML pipeline written **entirely** in Python
 1. To experiment with my own ideas for MLOps tools, as it is hard to develop devtools in a vacuum :) 
 2. To have something to integrate existing MLOps tools with so I can have real opinions
 
+The following diagram describes the pipeline at a high level. The README describes it in more detail.
+
+![Diagram](./toy-ml-pipeline.svg)
+<img src="./toy-ml-pipeline.svg">
+
 ## Getting started
 
 This pipeline is broken down into several components, described in a high level by the directories in this repository. See the Makefile for various commands you can run, but to serve the inference API locally, you can do the following:
