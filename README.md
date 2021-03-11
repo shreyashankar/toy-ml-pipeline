@@ -56,7 +56,7 @@ All Python dependencies and virtual environment creation is handled by the Makef
 
 We train a model to predict whether a passenger in a NYC taxicab ride will give the driver a large tip. This is a **binary classification task.** A large tip is arbitrarily defined as greater than 20% of the total fare (before tip). To evaluate the model or measure the efficacy of the model, we measure the [**F1 score**](https://en.wikipedia.org/wiki/F-score).
 
-The current best model is an instance of `sklearn.ensemble.RandomForestClassifier` with `max_depth` of 10 and other default parameters. I explored this toy task earlier in my [debugging ML talk](https://github.com/shreyashankar/debugging-ml-talk).
+The current best model is an instance of `sklearn.ensemble.RandomForestClassifier` with `max_depth` of 10 and other default parameters. The test set F1 score is 0.716. I explored this toy task earlier in my [debugging ML talk](https://github.com/shreyashankar/debugging-ml-talk).
 
 ## Dataset description
 
