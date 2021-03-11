@@ -1,4 +1,4 @@
-.PHONY: help lint etl training serve inference
+.PHONY: help test cleaning featuregen split train serve inference
 include .env
 
 # Makefile variables
@@ -16,10 +16,20 @@ $(foreach v,$(VARS),$(eval $(shell echo export $(v)="$($(v))")))
 help:
 	@echo "make venv"
 	@echo "       prepare development environment, use only once"
-	@echo "make lint"
-	@echo "       run pylint"
-	@echo "make run"
-	@echo "       run project"
+	@echo "make test"
+	@echo "       run tests"
+	@echo "make cleaning"
+	@echo "       run data cleaning"
+	@echo "make featuregen"
+	@echo "       run feature generation"
+	@echo "make split"
+	@echo "       run train/test split"
+	@echo "make train"
+	@echo "       run model training"
+	@echo "make serve"
+	@echo "       serve API locally"
+	@echo "make inference"
+	@echo "       run inference on random samples"
 
 # Install dependencies whenever setup.py is changed.
 venv: $(VENV_NAME)/bin/activate
