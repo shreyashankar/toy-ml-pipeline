@@ -21,8 +21,8 @@
     <li><a href="#utils">Utils documentation</a>
     <ul>
         <li><a href="#io">io</a></li>
-        <li><a href="feature-generators">Feature generators</a></li>
-        <li><a href="models">Models</a></li>
+        <li><a href="#feature-generators">Feature generators</a></li>
+        <li><a href="#models">Models</a></li>
       </ul>
     </li>
     <li><a href="#roadmap">Roadmap</a></li>
