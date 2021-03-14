@@ -2,7 +2,8 @@ from utils import io, models
 
 import pandas as pd
 
-if __name__ == '__main__':
+
+def main():
     # Load train set
     base = 'training/files'
     train_df = io.load_output_df(f'{base}/train')
@@ -46,3 +47,7 @@ if __name__ == '__main__':
 
     # Save model
     print(mw.save('training/models'))
+
+
+if __name__ == '__main__':
+    main()

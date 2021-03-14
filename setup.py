@@ -15,5 +15,15 @@ setup(
         'requests',
         's3fs',
         'sklearn'
-    ]
+    ],
+    entry_points={
+        'console_scripts': [
+            'cleaning=etl.cleaning:main',
+            'featuregen=etl.featuregen:main',
+            'split=training.split:main',
+            'train=training.train:main',
+            'serve=inference.app:main',
+            'inference=inference.inference:main',
+        ],
+    }
 )

@@ -9,7 +9,8 @@ from utils import io
 import pandas as pd
 import requests
 
-if __name__ == '__main__':
+
+def main():
     # Grab latest features and model wrapper
     df = io.load_output_df(
         'features/2020_12').drop('tpep_pickup_datetime', axis=1)
@@ -29,3 +30,7 @@ if __name__ == '__main__':
         print(f'Response: {response.json()}')
 
     print('Exiting.')
+
+
+if __name__ == '__main__':
+    main()
