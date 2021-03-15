@@ -5,7 +5,8 @@ import itertools
 import os
 import pandas as pd
 
-if __name__ == '__main__':
+
+def main():
     months = [f'{month:02d}' for month in range(1, 13)]
     years = ['2020']
     product = itertools.product(months, years)
@@ -22,3 +23,7 @@ if __name__ == '__main__':
         # Write "clean" df to s3
         component = os.path.join('clean', f'{year}_{month}')
         print(io.save_output_df(clean_df, component))
+
+
+if __name__ == '__main__':
+    main()

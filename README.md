@@ -96,13 +96,15 @@ Any applied ML pipeline is essentially a series of functions applied one after t
 
 The following table describes the components of this pipeline, in order:
 
+_Before running, build the Docker image: `docker build -t toy-ml-pipeline .`._
+
 | Name      | Description | How to run | File(s) |
 | ----------- | ----------- | --- | -- |
-| Cleaning | Reads the dataset (stored in a public S3 bucket) and performs very basic cleaning (drops rows outside the time range or with $0-valued fares) | `make cleaning` | `etl/cleaning.py` |
-| Featuregen | Generates basic features for the ML model | `make featuregen` | `etl/featuregen.py` | 
-| Split | Splits the features into train and test sets | `make split` | `training/split.py` |
-| Training | Trains a random forest classifier on the train set and evaluates it on the test set | `make training` | `training/train.py` |
-| Inference | Locally serves an API that is essentially a wrapper around the `predict` function | `make serve, make inference` | `[inference/app.py, inference/inference.py]` |
+| Cleaning | Reads the dataset (stored in a public S3 bucket) and performs very basic cleaning (drops rows outside the time range or with $0-valued fares) | `docker run --env-file=./.env toy-ml-pipeline cleaning` | `etl/cleaning.py` |
+| Featuregen | Generates basic features for the ML model | `docker run --env-file=./.env toy-ml-pipeline featuregen` | `etl/featuregen.py` | 
+| Split | Splits the features into train and test sets | `docker run --env-file=./.env toy-ml-pipeline split` | `training/split.py` |
+| Training | Trains a random forest classifier on the train set and evaluates it on the test set | `docker run --env-file=./.env toy-ml-pipeline training` | `training/train.py` |
+| Inference | Locally serves an API that is essentially a wrapper around the `predict` function | `docker run -p 5000:5000 --env-file=./.env toy-ml-pipeline serve, docker run --env-file=./.env toy-ml-pipeline inference` | `[inference/app.py, inference/inference.py]` |
 
 ### Data storage
 
