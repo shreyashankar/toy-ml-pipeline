@@ -1,15 +1,24 @@
 FROM python:3.8
 
-ENV WORKDIR=/app
+ARG NUM_CPUS=4
+ARG DEBIAN_FRONTEND=noninteractive
 
-COPY requirements.txt ${WORKDIR}/requirements.txt
-RUN pip install -r ${WORKDIR}/requirements.txt
+# Installing Virtualenv
+RUN pip install virtualenv
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="VIRTUAL_ENV/bin:$PATH"
 
-COPY . ${WORKDIR}
-RUN pip install -e ${WORKDIR}
+# Working with Application
+ENV WORKDIR=app
+COPY ./ /${WORKDIR}
+RUN pip install -r /${WORKDIR}/requirements.txt
+RUN pip install -e /${WORKDIR}/.
 
-WORKDIR ${WORKDIR}
+# Expose port 
+EXPOSE 5000
 
-# Include your variables here and/or 
-# use --env-file=<paht to .env file> on `docker run`
-# AIRFLOW_HOME=~/.airflow
+# Run the application:
+# ENTRYPOINT [ "cd", "/app" ]
+CMD ["python", "./app/inference/app.py"]
+
