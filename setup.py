@@ -23,7 +23,7 @@ setup(
             'split=training.split:main',
             'train=training.train:main',
             'serve=inference.app:main',
-            'inference=inference.inference:main',
+            'inference=inference.inference:main'
         ],
     }
 )

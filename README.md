@@ -105,6 +105,7 @@ _Before running, build the Docker image: `docker build -t toy-ml-pipeline .`._
 | Split | Splits the features into train and test sets | `docker run --env-file=./.env toy-ml-pipeline split` | `training/split.py` |
 | Training | Trains a random forest classifier on the train set and evaluates it on the test set | `docker run --env-file=./.env toy-ml-pipeline training` | `training/train.py` |
 | Inference | Locally serves an API that is essentially a wrapper around the `predict` function | `docker run -p 5000:5000 --env-file=./.env toy-ml-pipeline serve, docker run --env-file=./.env toy-ml-pipeline inference` | `[inference/app.py, inference/inference.py]` |
+| tests | Runs unit tests (currently only for `io`) | `docker run --env-file=./.env toy-ml-pipeline sh -c "pytest -s ./app/utils/tests.py"` | `utils/tests.py`
 
 ### Data storage
 
