@@ -1,3 +1,5 @@
+from mltrace import get_db_uri, set_db_uri, create_component, tag_component, log_component_run, get_git_hash
+from mltrace.entities import ComponentRun
 from utils import io, models
 
 import pandas as pd
@@ -10,6 +12,12 @@ def main():
     train_file_path = io.get_output_path(f'{base}/train')
     test_df = io.load_output_df(f'{base}/test')
     test_file_path = io.get_output_path(f'{base}/test')
+
+    # Logging
+    cr = ComponentRun('train')
+    cr.add_inputs([train_file_path, test_file_path])
+    cr.set_start_timestamp()
+    cr.git_hash = get_git_hash()
 
     feature_columns = [
         'pickup_weekday', 'pickup_hour', 'pickup_minute', 'work_hours',
@@ -46,8 +54,22 @@ def main():
     print(mw.get_feature_importances())
 
     # Save model
-    print(mw.save('training/models'))
+    output_path = mw.save('training/models')
+
+    # Log
+    cr.add_output(output_path)
+    cr.set_end_timestamp()
+    log_component_run(cr)
+
+    print(output_path)
 
 
 if __name__ == '__main__':
+    set_db_uri(get_db_uri().replace('database', 'localhost'))
+
+    # Create components
+    create_component(
+        'train', 'Training a model.', 'shreya')
+    tag_component('train', ['training'])
+
     main()
