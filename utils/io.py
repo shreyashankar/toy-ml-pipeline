@@ -26,12 +26,8 @@ def read_file(month: str, year: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe corresponding to all the yellow taxicab trips for the given parameters
     """
-
-    assert len(month) == 2, 'Month must be a 2-digit string.'
-    assert len(year) == 4, 'Year must be a 4-digit string.'
-
-    base_path = 's3://nyc-tlc/trip data/yellow_tripdata'
-    file_path = f'{base_path}_{year}-{month}.csv'
+    # Get filename
+    file_path = get_raw_data_filename(month, year)
 
     # Load data
     df = pd.read_csv(
@@ -39,6 +35,26 @@ def read_file(month: str, year: str) -> pd.DataFrame:
         parse_dates=['tpep_pickup_datetime', 'tpep_dropoff_datetime'], memory_map=True)
 
     return df
+
+
+def get_raw_data_filename(month: str, year: str) -> str:
+    """This function gets the filename corresponding to the raw data 
+    from the NYC taxicab public s3 bucket for the given month and year.
+
+    Args:
+        month (str): month formatted as a 2-digit string, i.e. "05" for May
+        year (str): year formatted as a 4-digit string, i.e. "2020" for 2020
+
+    Returns:
+        str: filename corresponding to the data
+    """
+
+    assert len(month) == 2, 'Month must be a 2-digit string.'
+    assert len(year) == 4, 'Year must be a 4-digit string.'
+
+    base_path = 's3://nyc-tlc/trip data/yellow_tripdata'
+    file_path = f'{base_path}_{year}-{month}.csv'
+    return file_path
 
 
 def write_file(df: pd.DataFrame, suffix: str, scratch: bool = True) -> str:
@@ -181,7 +197,7 @@ def load_output_df(component: str, dev: bool = True, version: str = None) -> pd.
 
     # Load data
     filename = get_output_path(component, dev, version)
-    df = pd.read_parquet(f's3://{filename}')
+    df = pd.read_parquet(filename)
     return df
 
 
@@ -200,7 +216,7 @@ def load_output_pkl(component: str, dev: bool = True, version: str = None) -> ob
     filename = get_output_path(component, dev, version)
 
     # Strip bucket name
-    filename = '/'.join(filename.split('/')[1:])
+    filename = filename[len('s3://' + BUCKET_NAME) + 1:]
     s3_client = boto3.client('s3')
     obj = s3_client.get_object(Bucket=BUCKET_NAME, Key=filename)
     serialized_obj = obj['Body'].read()
@@ -232,4 +248,4 @@ def get_output_path(component: str, dev: bool = True, version: str = None) -> st
     filenames = list_files(prefix)
     filename = get_file_at_latest_timestamp(filenames)
 
-    return filename
+    return f's3://{filename}'
