@@ -1,5 +1,4 @@
-from mltrace import get_db_uri, set_db_uri, create_component, tag_component, log_component_run, get_git_hash
-from mltrace.entities import ComponentRun
+from mltrace import get_db_uri, set_db_uri, create_component, tag_component, register
 from utils import io, feature_generators
 
 import itertools
@@ -7,17 +6,12 @@ import os
 import pandas as pd
 
 
+@register('featuregen', input_vars=['input_path'], output_vars=['output_path'])
 def featurize_data(month: str, year: str) -> str:
     # Load latest clean data
     clean_component = os.path.join('clean', f'{year}_{month}')
     df = io.load_output_df(clean_component)
     input_path = io.get_output_path(clean_component)
-
-    # Logging
-    cr = ComponentRun('featuregen')
-    cr.add_input(input_path)
-    cr.set_start_timestamp()
-    cr.git_hash = get_git_hash()
 
     # Create features and label
     pickup_features = feature_generators.Pickup().compute(df)
@@ -32,10 +26,6 @@ def featurize_data(month: str, year: str) -> str:
     # Write features to s3
     features_component = os.path.join('features', f'{year}_{month}')
     output_path = io.save_output_df(features_df, features_component)
-
-    cr.set_end_timestamp()
-    cr.add_output(output_path)
-    log_component_run(cr)
 
     return output_path
 
