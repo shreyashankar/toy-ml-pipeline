@@ -12,15 +12,17 @@ import requests
 
 def main():
     # Grab latest features and model wrapper. Sort features by date.
-    df = io.load_output_df('features/2020_03')\
+    df = io.load_output_df('features/2020_12')\
            .sort_values(by=['tpep_pickup_datetime'], ascending=True)\
            .drop('tpep_pickup_datetime', axis=1)
 
     # Run model on latest features for a random example
     url = 'http://localhost:5000/predict'
+    
+    req = {'data': df.to_json(), 'feature_path': io.get_output_path('features/2020_12')}
 
     response = requests.post(
-        url, json=df.to_json())
+        url, json=req)
     print(f'Response: {response.json()}')
 
     print('Exiting.')

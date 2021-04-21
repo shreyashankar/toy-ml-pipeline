@@ -10,6 +10,7 @@ setup(
         'fsspec',
         'numpy',
         'pandas',
+        'prometheus-flask-exporter',
         'pyarrow',
         'pytest',
         'requests',
