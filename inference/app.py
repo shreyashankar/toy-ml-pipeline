@@ -11,10 +11,15 @@ mw = models.RandomForestModelWrapper.load('training/models')
 @app.route('/predict', methods=['POST'])
 def predict():
     req = request.get_json()
-    preds = mw.predict(pd.DataFrame({k: [v] for k, v in req.items()}))
+    df = pd.DataFrame({k: [v] for k, v in req.items()})
+    df['prediction'] = mw.predict(df)
     result = {
-        'prediction': preds[0]
+        'prediction': df['prediction']
     }
+    # Add accuracy if label in df and more than one row
+    label_column = 'high_tip_indicator'
+    if df.count() > 1 and label_column in df.columns:
+        result['score'] = mw.score(df, label_column)
     return jsonify(result)
 
 
