@@ -12,12 +12,13 @@ import requests
 
 def main():
     # Grab latest features and model wrapper. Sort features by date.
-    df = io.load_output_df('features/2020_12')\
+    df = io.load_output_df('features/2020_03')\
            .sort_values(by=['tpep_pickup_datetime'], ascending=True)\
            .drop('tpep_pickup_datetime', axis=1)
+    feature_path = io.get_output_path('features/2020_03')
 
     # Run model on latest features for a random example
-    url = 'http://localhost:5000/predict'
+    url = 'http://127.0.0.1:8000/predict'
     idx = 0
     preds = []
 
@@ -25,14 +26,20 @@ def main():
         inp = input('Press enter to make a prediction and q to quit.\n')
         if (inp.strip().lower() == 'q'):
             break
-        example = df.iloc[[idx]].to_dict('r')[0]
-        idx += 1
+        example = df.iloc[[idx]]
         print(f'Request: {example}')
 
+        req = {
+            'data': example.to_json(),
+            'row_idx': idx,
+            'feature_path': feature_path
+        }
+
         response = requests.post(
-            url, json=example)
+            url, json=req)
         print(f'Response: {response.json()}')
-        preds.append(responds['prediction'])
+        idx += 1
+        preds.append(response.json()['prediction'][0])
 
     print('Exiting.')
 

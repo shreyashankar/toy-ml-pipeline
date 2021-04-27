@@ -17,13 +17,13 @@ def main():
            .drop('tpep_pickup_datetime', axis=1)
 
     # Run model on latest features for a random example
-    url = 'http://localhost:5000/predict'
+    url = 'http://127.0.0.1:8000/predict'
     
     req = {'data': df.to_json(), 'feature_path': io.get_output_path('features/2020_12')}
 
     response = requests.post(
         url, json=req)
-    print(f'Response: {response.json()}')
+    # print(f'Response: {response.json()}')
 
     print('Exiting.')
 

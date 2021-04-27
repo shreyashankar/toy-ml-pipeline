@@ -19,29 +19,39 @@ model_path = io.get_output_path('training/models')
 def log_live_metric(name: str, val: float):
     pass
 
-@register(component_name='inference', inputs=[model_path], input_vars=['feature_path', 'row_idx'], output_vars=['output_ids'])
 @app.route('/predict', methods=['POST'])
+@register(component_name='inference', inputs=[model_path], input_vars=['feature_path', 'row_idx'], output_vars=['output_ids'], endpoint=True)
 def predict():
     req = request.get_json()
+    print("Got request")
     feature_path = req['feature_path'] if 'feature_path' in req else None
     row_idx = req['row_idx'] if 'row_idx' in req else None
-    df = pd.DataFrame({k: [v] for k, v in req['data'].items()})
+
+    df = pd.read_json(req['data'])
+    # df = pd.DataFrame({k: [v] for k, v in req['data'].items()})
     df['prediction'] = mw.predict(df)
+    print("made prediction")
     result = {
-        'prediction': df['prediction']
+        'prediction': df['prediction'].to_list()
     }
     # Add accuracy if label in df and more than one row
     label_column = 'high_tip_indicator'
     if len(df) > 1 and label_column in df.columns:
         result['score'] = mw.score(df, label_column)
 
+    print("Scored")
+
     # Log output ids to mltrace
     output_ids = create_random_ids(num_outputs=len(df))
-    return jsonify(result)
+    print('made output ids')
+    result['id'] = output_ids
+    out = jsonify(result)
+    print('jsonified result')
+    return out
 
 
 def main():
-    app.run(debug=True)
+    app.run(debug=True, port=8000)
 
 
 if __name__ == '__main__':
