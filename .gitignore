@@ -1,5 +1,5 @@
 venv*
 .env
 utils/__pycache__/*
-*.egg_info
+*.egg-info*
 mltrace*

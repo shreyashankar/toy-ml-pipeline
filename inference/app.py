@@ -25,7 +25,7 @@ def predict():
     req = request.get_json()
     print("Got request")
     feature_path = req['feature_path'] if 'feature_path' in req else None
-    row_idx = req['row_idx'] if 'row_idx' in req else None
+    row_idx = f"row_idx_{req['row_idx']}" if 'row_idx' in req else None
 
     df = pd.read_json(req['data'])
     # df = pd.DataFrame({k: [v] for k, v in req['data'].items()})
