@@ -30,7 +30,7 @@ def main():
 
 
 if __name__ == '__main__':
-    set_db_uri(get_db_uri().replace('database', 'localhost'))
+    set_db_uri(get_db_uri().replace('database', '54.177.215.161'))
 
     # Create components
     create_component(

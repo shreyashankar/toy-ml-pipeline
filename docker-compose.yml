@@ -1,0 +1,59 @@
+version: "3"  
+services:  
+    example-prometheus:
+        image: prom/prometheus:latest
+        restart: unless-stopped
+        container_name: example-prometheus
+        ports:
+            - 9090:9090
+        volumes:
+            - "./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml"
+        networks:
+            example-network:
+                aliases:
+                - example-prometheus
+    
+    app:
+        container_name: app
+        restart: always
+        build:
+            context: .
+            dockerfile: ./inference/Dockerfile
+        environment:
+            PYTHONPATH: /src
+            AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+            AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+            AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+            DEBUG_METRICS: "false"
+        volumes:
+            - .:/src
+        ports:
+        - 8000:8000
+        networks:
+            example-network:
+                aliases:
+                - app
+
+            
+    example-grafana:
+        image: grafana/grafana:latest
+        restart: unless-stopped
+        user: "472"
+        container_name: example-grafana
+        depends_on:
+            - example-prometheus
+        ports:
+            - 3000:3000
+        volumes:
+            - ./monitoring/datasource.yml:/etc/grafana/provisioning/datasource.yml
+        env_file:
+            - ./monitoring/config.monitoring
+        networks:
+            example-network:
+                aliases:
+                - example-grafana
+        
+networks:
+    example-network:
+        name: example-network
+        driver: bridge

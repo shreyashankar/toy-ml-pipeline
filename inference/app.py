@@ -5,7 +5,7 @@ from utils import io, models
 
 import pandas as pd
 
-app = Flask('high_tip_app')
+app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 
 # static information as metric
@@ -23,14 +23,12 @@ def log_live_metric(name: str, val: float):
 @register(component_name='inference', inputs=[model_path], input_vars=['feature_path', 'row_idx'], output_vars=['output_ids'], endpoint=True)
 def predict():
     req = request.get_json()
-    print("Got request")
     feature_path = req['feature_path'] if 'feature_path' in req else None
     row_idx = f"row_idx_{req['row_idx']}" if 'row_idx' in req else None
 
     df = pd.read_json(req['data'])
     # df = pd.DataFrame({k: [v] for k, v in req['data'].items()})
     df['prediction'] = mw.predict(df)
-    print("made prediction")
     result = {
         'prediction': df['prediction'].to_list()
     }
@@ -39,23 +37,20 @@ def predict():
     if len(df) > 1 and label_column in df.columns:
         result['score'] = mw.score(df, label_column)
 
-    print("Scored")
 
     # Log output ids to mltrace
     output_ids = create_random_ids(num_outputs=len(df))
-    print('made output ids')
     result['id'] = output_ids
     out = jsonify(result)
-    print('jsonified result')
     return out
 
 
 def main():
-    app.run(debug=True, port=8000)
+    app.run(debug=False, host="0.0.0.0", port=8000)
 
 
 if __name__ == '__main__':
-    set_db_uri(get_db_uri().replace('database', 'localhost'))
+    set_db_uri(get_db_uri().replace('database', '54.177.215.161'))
 
     # Create components
     create_component(
