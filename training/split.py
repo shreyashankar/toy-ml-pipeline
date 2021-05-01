@@ -7,8 +7,8 @@ import pandas as pd
 
 @register(component_name='split', input_vars=['input_files'], output_vars=['train_output_path', 'test_output_path'])
 def main():
-    train_months = ['2020_01']
-    test_month = '2020_02'
+    train_months = ['2020_02']
+    test_month = '2020_03'
 
     input_files = [io.get_output_path(os.path.join(
         'features', month)) for month in train_months + [test_month]]

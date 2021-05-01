@@ -7,6 +7,7 @@ Sample script that runs inference on examples incrementally. It pings the "api" 
 from utils import io
 
 import pandas as pd
+import random
 import requests
 
 
@@ -18,17 +19,18 @@ def main():
     feature_path = io.get_output_path('features/2020_03')
 
     # Run model on latest features for a random example
-    url = 'http://127.0.0.1:8000/predict'
+    prediction_url = 'http://127.0.0.1:8000/predict'
+    log_url = 'http://127.0.0.1:8000/log_prediction'
     idx = 0
     preds = []
 
     while(True):
-        inp = input('Press enter to make a prediction and q to quit.\n')
-        if (inp.strip().lower() == 'q'):
-            break
+        # if idx % 100 == 0 and idx != 0:
+        #     inp = input('Press enter to make a prediction and q to quit.\n')
+        #     if (inp.strip().lower() == 'q'):
+        #         break
+        
         example = df.iloc[[idx]]
-        print(f'Request: {example}')
-
         req = {
             'data': example.to_json(),
             'row_idx': idx,
@@ -36,10 +38,13 @@ def main():
         }
 
         response = requests.post(
-            url, json=req)
-        print(f'Response: {response.json()}')
+            prediction_url, json=req)
+        print(f'Response: {response.json()}, label was {example.high_tip_indicator}')
         idx += 1
         preds.append(response.json()['prediction'][0])
+        
+        # Log prediction
+        # requests.get(log_url, params={'prediction': response.json()['prediction'][0]})
 
     print('Exiting.')
 
