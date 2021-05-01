@@ -8,6 +8,8 @@ setup(
         'boto3',
         'flask',
         'fsspec',
+        'jupyterlab',
+        'notebook',
         'numpy',
         'pandas',
         'prometheus_client',

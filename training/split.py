@@ -22,8 +22,8 @@ def main():
 
     # Save train and test sets
     component_prefix = 'training/files'
-    train_output_path = io.save_output_df(train_df, f'{component_prefix}/train')
-    test_output_path = io.save_output_df(test_df, f'{component_prefix}/test')
+    train_output_path = io.save_output_df(train_df, f'{component_prefix}/train', dev=False)
+    test_output_path = io.save_output_df(test_df, f'{component_prefix}/test', dev=False)
 
     print(train_output_path)
     print(test_output_path)
