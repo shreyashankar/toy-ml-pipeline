@@ -19,6 +19,20 @@
   "links": [],
   "panels": [
     {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 26,
+      "panels": [],
+      "title": "ML task monitoring",
+      "type": "row"
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -28,16 +42,16 @@
         "defaults": {},
         "overrides": []
       },
-      "fill": 1,
+      "fill": 0,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "hiddenSeries": false,
-      "id": 18,
+      "id": 24,
       "legend": {
         "avg": false,
         "current": false,
@@ -48,7 +62,7 @@
         "values": false
       },
       "lines": true,
-      "linewidth": 1,
+      "linewidth": 2,
       "nullPointMode": "null",
       "options": {
         "alertThreshold": true
@@ -65,19 +79,86 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "increase(prediction_counter_total[30m])",
+          "expr": "histogram_quantile(0.01, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
           "format": "time_series",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "0.01",
           "refId": "A"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.05, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.05",
+          "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.1, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.1",
+          "refId": "C"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.25, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.25",
+          "refId": "D"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.5, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.5",
+          "refId": "E"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.75, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.75",
+          "refId": "G"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.9, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.9",
+          "refId": "I"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.95, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.95",
+          "refId": "J"
+        },
+        {
+          "exemplar": true,
+          "expr": "histogram_quantile(0.99, sum by (job, le) (rate(prediction_histogram_bucket[5m])))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "0.99",
+          "refId": "F"
         }
       ],
       "thresholds": [],
+      "timeFrom": null,
       "timeRegions": [],
-      "title": "Number of predictions per bucket",
+      "timeShift": null,
+      "title": "Predicted value percentiles [5m]",
       "tooltip": {
         "shared": true,
-        "sort": 0,
+        "sort": 1,
         "value_type": "individual"
       },
       "type": "graph",
@@ -127,7 +208,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 1
       },
       "hiddenSeries": false,
       "id": 13,
@@ -221,6 +302,210 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
+      "description": "Inspired by [Jeremy Jordan's example](https://github.com/jeremyjordan/ml-monitoring/blob/main/dashboards/model.json)",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 2,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 22,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 2,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(prediction_histogram_bucket[5m])) by (le)",
+          "format": "heatmap",
+          "interval": "",
+          "legendFormat": "{{le}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Distribution of predictions [5m]",
+      "tooltip": {
+        "shared": true,
+        "sort": 1,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 20,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum(rate(prediction_histogram_sum[5m])) / sum(rate(prediction_histogram_count[5m]))",
+          "interval": "",
+          "legendFormat": "{{job}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Average predicted value [5m]",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 28,
+      "panels": [],
+      "title": "Flask monitoring",
+      "type": "row"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {},
@@ -232,7 +517,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 8
+        "y": 18
       },
       "hiddenSeries": false,
       "id": 2,
@@ -336,7 +621,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 8
+        "y": 18
       },
       "hiddenSeries": false,
       "id": 15,
@@ -440,7 +725,7 @@
         "h": 5,
         "w": 10,
         "x": 0,
-        "y": 13
+        "y": 23
       },
       "hiddenSeries": false,
       "id": 6,
@@ -544,7 +829,7 @@
         "h": 5,
         "w": 14,
         "x": 10,
-        "y": 13
+        "y": 23
       },
       "hiddenSeries": false,
       "id": 16,
@@ -638,7 +923,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -660,5 +945,5 @@
   "timezone": "",
   "title": "Example dashboard",
   "uid": "_eX4mpl3",
-  "version": 3
+  "version": 4
 }
