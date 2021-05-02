@@ -8,10 +8,10 @@ import pandas as pd
 def main():
     # Load train set
     base = 'training/files'
-    train_df = io.load_output_df(f'{base}/train')
-    train_file_path = io.get_output_path(f'{base}/train')
-    test_df = io.load_output_df(f'{base}/test')
-    test_file_path = io.get_output_path(f'{base}/test')
+    train_df = io.load_output_df(f'{base}/train', dev=False)
+    train_file_path = io.get_output_path(f'{base}/train', dev=False)
+    test_df = io.load_output_df(f'{base}/test', dev=False)
+    test_file_path = io.get_output_path(f'{base}/test', dev=False)
 
     feature_columns = [
         'pickup_weekday', 'pickup_hour', 'pickup_minute', 'work_hours',
@@ -48,7 +48,7 @@ def main():
     print(mw.get_feature_importances())
 
     # Save model
-    output_path = mw.save('training/models')
+    output_path = mw.save('training/models', dev=False)
     print(output_path)
 
 

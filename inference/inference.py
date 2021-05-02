@@ -29,7 +29,7 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 def main():
-    # Grab latest features and model wrapper. Sort features by date.
+    # Sort features by date.
     df = io.load_output_df('features/2020_03')\
            .sort_values(by=['tpep_pickup_datetime'], ascending=True)
     feature_path = io.get_output_path('features/2020_03')

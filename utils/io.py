@@ -99,8 +99,8 @@ def create_output_path(component: str, dev: bool = True, version: str = None) ->
     prefix = os.path.join(
         'dev', component) if dev else os.path.join('prod', component)
 
-    assert list_files(
-        prefix), 'Component does not exist. Specify the correct component or contact an administrator to create it.'
+    # assert list_files(
+    #     prefix), 'Component does not exist. Specify the correct component or contact an administrator to create it.'
 
     # Create version if doesn't exist
     if version == None:

@@ -16,8 +16,8 @@ metrics.info('app_info', 'Application info', version='0.1')
 
 # Load model
 global mw
-mw = models.RandomForestModelWrapper.load('training/models')
-model_path = io.get_output_path('training/models')
+mw = models.RandomForestModelWrapper.load('training/models', dev=False)
+model_path = io.get_output_path('training/models', dev=False)
 
 # Create metrics
 buckets = (*(np.around(np.arange(0, 1, 0.05), 2).tolist()), float("inf"))
