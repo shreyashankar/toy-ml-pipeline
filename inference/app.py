@@ -21,7 +21,7 @@ model_path = io.get_output_path('training/models', dev=False)
 
 # Create metrics
 buckets = (*(np.around(np.arange(0, 1, 0.05), 2).tolist()), float("inf"))
-prediction_histogram = Histogram(name='prediction_histogram', description='Histogram of prediction outputs', registry=metrics.registry, buckets=buckets)
+prediction_histogram = Histogram('prediction_histogram', 'Histogram of prediction outputs', registry=metrics.registry, buckets=buckets)
 
 # Prediction function
 @app.route('/predict', methods=['POST'])
