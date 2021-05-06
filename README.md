@@ -44,11 +44,11 @@ The following diagram describes the pipeline at a high level. The README describ
 
 ## Getting started
 
-This pipeline is broken down into several components, described in a high level by the directories in this repository. See the Makefile for various commands you can run, but to serve the inference API locally, you can do the following:
+This pipeline is broken down into several components, described in a high level by the directories in this repository. To serve the inference API locally, you can do the following:
 
 1. `git clone` the repository
-2. In the root directory of the repo, run `make serve`
-3. [OPTIONAL] In a new tab, run `make inference` to ping the API with some sample records
+2. In the root directory of the repo, run `python inference/app.py`
+3. [OPTIONAL] In a new tab, run `python inference/inference.py` to ping the API with some sample records
 
 All Python dependencies and virtual environment creation is handled by the Makefile. See `setup.py` to see the packages installed into the virtual environment, which mainly consist of basic Python packages such as `pandas` or `sklearn`.
 
@@ -115,7 +115,7 @@ The bucket has a `scratch` folder, where random scratch files live. These random
 
 The dev directory's subdirectories represent the components in the pipeline. These subdirectories contain the outputs of each component respectively, where the outputs are versioned with the timestamp the component was run. The `utils.io` library contains helper functions to write outputs and load the latest component output as input to another component. To inspect the filesystem structure further, you can call `io.list_files(dirname)`, which returns the immediate files in `dirname`.
 
-If you have write permissions, store your keys/ids in an `.env` file, and the `Makefile` will automatically pick it up. If you do not have write permissions, you will run into an error if you try to write to the S3 bucket.
+If you have write permissions, store your keys/ids in an `.env` file and export them as environment variables. If you do not have write permissions, you will run into an error if you try to write to the S3 bucket.
 
 ## Utils documentation
 
