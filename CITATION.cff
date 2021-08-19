@@ -1,0 +1,12 @@
+# YAML 1.2
+---
+authors: 
+  -
+    affiliation: "UC Berkeley"
+    family-names: 
+    given-names: "Shreya Shankar"
+cff-version: "1.1.0"
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/shreyashankar/toy-ml-pipeline"
+title: "Toy ML Pipeline"
+...
