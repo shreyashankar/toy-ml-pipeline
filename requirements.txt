@@ -8,3 +8,6 @@ pytest
 requests
 s3fs
 sklearn
+jupyter
+matplotlib
+seaborn

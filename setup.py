@@ -14,7 +14,10 @@ setup(
         'pytest',
         'requests',
         's3fs',
-        'sklearn'
+        'sklearn',
+        'jupyter',
+	'matplotlib',
+	'seaborn'		
     ],
     entry_points={
         'console_scripts': [
