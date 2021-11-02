@@ -3,3 +3,4 @@ venv*
 utils/__pycache__/*
 *.egg_info
 mltrace*
+.DS_Store
