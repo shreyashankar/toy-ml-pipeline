@@ -4,3 +4,5 @@ utils/__pycache__/*
 *.egg_info
 mltrace*
 .DS_Store
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
