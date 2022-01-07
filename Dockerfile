@@ -12,6 +12,7 @@ ENV PATH="VIRTUAL_ENV/bin:$PATH"
 # Working with Application
 ENV WORKDIR=app
 COPY ./ /${WORKDIR}
+RUN pip install	--upgrade pip
 RUN pip install -r /${WORKDIR}/requirements.txt
 RUN pip install -e /${WORKDIR}/.
 
